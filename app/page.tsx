@@ -1,10 +1,5 @@
+import { LearningDashboard } from "@/components/learning-dashboard";
 
 export default function Home() {
-  return (
-    <div>
-      <h1>
-        LearnHub
-      </h1>
-    </div>
-  );
+  return <LearningDashboard />;
 }

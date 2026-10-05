@@ -1,12 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@clerk/themes/shadcn.css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+
+* {
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -48,6 +58,7 @@
 }
 
 :root {
+  color-scheme: light;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -80,40 +91,95 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --scene-facet: rgb(52 91 70 / 7%);
+  --scene-warm-facet: rgb(184 82 56 / 5%);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  color-scheme: dark;
+  --background: oklch(0.18 0.035 255);
+  --foreground: oklch(0.94 0.015 250);
+  --card: oklch(0.22 0.035 255);
+  --card-foreground: oklch(0.94 0.015 250);
+  --popover: oklch(0.22 0.035 255);
+  --popover-foreground: oklch(0.94 0.015 250);
+  --primary: oklch(0.72 0.11 150);
+  --primary-foreground: oklch(0.19 0.03 255);
+  --secondary: oklch(0.29 0.035 255);
+  --secondary-foreground: oklch(0.94 0.015 250);
+  --muted: oklch(0.29 0.035 255);
+  --muted-foreground: oklch(0.73 0.025 250);
+  --accent: oklch(0.3 0.04 255);
+  --accent-foreground: oklch(0.94 0.015 250);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: oklch(1 0.01 250 / 12%);
+  --input: oklch(1 0.01 250 / 16%);
+  --ring: oklch(0.72 0.11 150);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.22 0.035 255);
+  --sidebar-foreground: oklch(0.94 0.015 250);
+  --sidebar-primary: oklch(0.72 0.11 150);
+  --sidebar-primary-foreground: oklch(0.19 0.03 255);
+  --sidebar-accent: oklch(0.29 0.035 255);
+  --sidebar-accent-foreground: oklch(0.94 0.015 250);
+  --sidebar-border: oklch(1 0.01 250 / 12%);
+  --sidebar-ring: oklch(0.72 0.11 150);
+  --scene-facet: rgb(99 132 166 / 9%);
+  --scene-warm-facet: rgb(241 72 48 / 5%);
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+main::before,
+main::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+main::before {
+  background: var(--scene-facet);
+  clip-path: polygon(0 4%, 40% 0, 30% 58%, 0 47%);
+}
+
+main::after {
+  background: var(--scene-warm-facet);
+  clip-path: polygon(37% 100%, 52% 67%, 68% 100%);
+}
+
+.dark main {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.dark main [class*="text-[#"] {
+  color: var(--muted-foreground);
+}
+
+.dark main :is(h1, h2, h3)[class*="text-[#"] {
+  color: var(--foreground);
+}
+
+.dark main [class~="bg-white"],
+.dark main [class~="bg-white/95"] {
+  background-color: var(--card);
+}
+
+.dark main [class*="border-[#"] {
+  border-color: var(--border);
+}
+
+.dark main [class*="divide-[#"] > :not(:last-child) {
+  border-color: var(--border);
 }
 
 @layer base {
@@ -126,4 +192,10 @@
   html {
     @apply font-sans;
   }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

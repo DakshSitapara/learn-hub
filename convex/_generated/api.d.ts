@@ -8,13 +8,23 @@
  * @module
  */
 
+import type * as courseSeed from "../courseSeed.js";
+import type * as courseValidators from "../courseValidators.js";
+import type * as courses from "../courses.js";
+import type * as progress from "../progress.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  courseSeed: typeof courseSeed;
+  courseValidators: typeof courseValidators;
+  courses: typeof courses;
+  progress: typeof progress;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
