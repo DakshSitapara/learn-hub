@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import type { Course } from "@/lib/courses";
 import { useLearningProgress } from "@/hooks/use-learning-progress";
-import { CourseQuiz } from "@/components/courses/course-quiz";
 
 export function CourseDetail({ course }: { course: Course }) {
   const {
@@ -33,6 +32,12 @@ export function CourseDetail({ course }: { course: Course }) {
     : 0;
   const isCourseComplete =
     lessonIds.length > 0 && completedCount === lessonIds.length;
+  const nextLessonIndex = course.lessons.findIndex(
+    (lesson) => !completedIds.has(lesson.id),
+  );
+
+  const nextLesson =
+    nextLessonIndex >= 0 ? course.lessons[nextLessonIndex] : null;
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-[#f5f7f2] text-[#182b23]">
@@ -99,6 +104,33 @@ export function CourseDetail({ course }: { course: Course }) {
         )}
 
         <div className="mt-8 space-y-10">
+          {isReady && nextLesson && (
+            <section className="rounded-md border border-[#dfe5dc] bg-white p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#688071]">
+                    Continue learning
+                  </p>
+
+                  <h2 className="mt-1 text-lg font-semibold text-[#24372d]">
+                    {nextLesson.title}
+                  </h2>
+
+                  <p className="mt-1 text-sm text-[#718078]">
+                    Lesson {nextLessonIndex + 1} of {course.lessons.length}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setExpandedLessonId(nextLesson.id)}
+                  className="inline-flex h-10 shrink-0 items-center justify-center rounded-sm bg-[#245640] px-4 text-sm font-semibold text-white transition hover:bg-[#153f30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#245640]"
+                >
+                  Continue learning
+                </button>
+              </div>
+            </section>
+          )}
           <section aria-labelledby="lesson-list-title">
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -137,8 +169,14 @@ export function CourseDetail({ course }: { course: Course }) {
               {course.lessons.map((lesson, index) => {
                 const isComplete = completedIds.has(lesson.id);
                 const isExpanded = expandedLessonId === lesson.id;
+                const isCurrent = nextLesson?.id === lesson.id;
                 return (
-                  <li key={lesson.id} className="py-4">
+                  <li
+                    key={lesson.id}
+                    className={`rounded-md py-4 transition-colors ${
+                      isCurrent ? "bg-[#f4f8f3] px-3" : "px-0"
+                    }`}
+                  >
                     <div className="flex items-start gap-3">
                       <span
                         className={`mt-1 grid size-7 shrink-0 place-items-center rounded-full text-xs font-semibold ${
@@ -163,8 +201,14 @@ export function CourseDetail({ course }: { course: Course }) {
                           className="flex w-full items-start justify-between gap-3 text-left"
                         >
                           <span>
-                            <span className="block text-[15px] font-semibold leading-5 text-[#293d32]">
+                            <span className="flex flex-wrap items-center gap-2 text-[15px] font-semibold leading-5 text-[#293d32]">
                               {lesson.title}
+
+                              {isCurrent && (
+                                <span className="rounded-full bg-[#e1f0e4] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#286d49]">
+                                  Next
+                                </span>
+                              )}
                             </span>
                             <span className="mt-1 block text-sm leading-5 text-[#718078]">
                               {lesson.summary}
@@ -231,10 +275,37 @@ export function CourseDetail({ course }: { course: Course }) {
           </section>
 
           <div className="max-w-3xl">
-            <CourseQuiz course={course} />
-            <p className="mt-3 px-1 text-xs leading-5 text-[#77847b]">
-              Your latest score and lesson progress are saved to your account.
-            </p>
+            <div className="rounded-md border border-[#dfe5dc] bg-white p-5">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#688071]">
+                  Course assessment
+                </p>
+
+                <h2 className="mt-1 text-xl font-semibold text-[#24372d]">
+                  Test your knowledge
+                </h2>
+
+                <p className="mt-2 text-sm leading-6 text-[#64736a]">
+                  Take a short timed quiz to check your understanding of this
+                  course.
+                </p>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-[#718078]">
+                <span>{course.quiz.length} questions</span>
+
+                <span aria-hidden="true">•</span>
+
+                <span>{course.quizMinutes} min</span>
+              </div>
+
+              <Link
+                href={`/courses/${course.id}/quiz`}
+                className="mt-5 inline-flex h-10 items-center justify-center rounded-sm bg-[#245640] px-4 text-sm font-semibold text-white transition hover:bg-[#153f30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#245640]"
+              >
+                Start quiz
+              </Link>
+            </div>
           </div>
         </div>
       </div>
