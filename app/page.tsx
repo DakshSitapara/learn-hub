@@ -1,4 +1,4 @@
-import { LearningDashboard } from "@/components/learning-dashboard";
+import { LearningDashboard } from "@/components/dashboard/learning-dashboard";
 
 export default function Home() {
   return <LearningDashboard />;

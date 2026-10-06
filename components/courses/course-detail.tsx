@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import type { Course } from "@/lib/courses";
 import { useLearningProgress } from "@/hooks/use-learning-progress";
-import { CourseQuiz } from "@/components/course-quiz";
+import { CourseQuiz } from "@/components/courses/course-quiz";
 
 export function CourseDetail({ course }: { course: Course }) {
   const {
